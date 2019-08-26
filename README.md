@@ -1,1 +1,1 @@
-# TheDailyInfo
+# The Daily Informative
