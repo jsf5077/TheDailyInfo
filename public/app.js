@@ -3,10 +3,18 @@ $.getJSON("/articles", function(data) {
     // For each one
     for (var i = 0; i < data.length; i++) {
       // Display the apropos information on the page
-      $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+      $("#articles").append("<p data-id='" + data[i]._id + "'><a href='"+data[i].link+"' target='_blank'>"+ data[i].title + "</a></p>");
     }
   });
   
+//   <div class="card" style="width: 18rem;">
+//   <img src="..." class="card-img-top" alt="...">
+//   <div class="card-body">
+//     <h5 class="card-title">Card title</h5>
+//     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+//     <a href="#" class="btn btn-primary">Go somewhere</a>
+//   </div>
+// </div>
   
   // Whenever someone clicks a p tag
   $(document).on("click", "p", function() {
