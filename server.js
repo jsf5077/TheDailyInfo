@@ -33,7 +33,16 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/theDailyLeopard", { useNewUrlParser: true });
+// mongoose.connect("mongodb://localhost/theDailyLeopard", { useNewUrlParser: true });
+
+
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/theDailyLeopard";
+
+// mongoose.Promise = Promise;
+mongoose.connect(MONGODB_URI)
+// , {
+//   useMongoClient: true
+// });
 
 // Routes
 app.get("/", (req, res) => {
@@ -200,13 +209,7 @@ app.put("/delete/:id", function(req, res) {
     });
 });
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
-// mongoose.Promise = Promise;
-mongoose.connect(MONGODB_URI)
-// , {
-//   useMongoClient: true
-// });
 
 // Start the server
 app.listen(PORT, function() {
