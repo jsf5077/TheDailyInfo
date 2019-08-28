@@ -36,16 +36,13 @@ app.use(express.static("public"));
 // mongoose.connect("mongodb://localhost/theDailyLeopard", { useNewUrlParser: true });
 
 
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/theDailyLeopard";
+var MONGODB_URI = process.env.MONGODB_URI;
 
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true }, function (err) {
-  if (err) {
-      console.log(err); 
+mongoose.connect(MONGODB_URI || "mongodb://theDailyLeopard:password69@ds353007.mlab.com:53007/heroku_gkrk0qlw",
+  {
+  useMongoClient: true
   }
-  else {
-      console.log("connected to the db"); 
-  }
-});
+);
 
 
 // Routes
