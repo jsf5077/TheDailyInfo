@@ -38,11 +38,15 @@ app.use(express.static("public"));
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/theDailyLeopard";
 
-// mongoose.Promise = Promise;
-mongoose.connect(MONGODB_URI)
-// , {
-//   useMongoClient: true
-// });
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true }, function (err) {
+  if (err) {
+      console.log(err); 
+  }
+  else {
+      console.log("connected to the db"); 
+  }
+});
+
 
 // Routes
 app.get("/", (req, res) => {
