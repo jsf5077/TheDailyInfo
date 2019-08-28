@@ -3,19 +3,23 @@ $.getJSON("/articles", function(data) {
     // For each one
     for (var i = 0; i < data.length; i++) {
       // Display the apropos information on the page
-    //   $("#articles").append("<p data-id='" + data[i]._id + "'><a href='"+data[i].link+"' target='_blank'>"+ data[i].title + "</a></p>");
-      $("#articles").append("<div class='card' style'width: 18rem;'> <img src='" + data[i].img + "' class='card-img-top' alt='img'><div class='card-body'><h5 data-id='" + data[i]._id + "' class='card-text'>" + data[i].title + "</h5><br><p class='mb-0'><strong>" + data[i].author + "</strong></p><p class='mb-0'>" + data[i].date + "</p></br><div = class''><a href='" + data[i].link + "' target='_blank' class='btn btn-primary btn-block'>checkout the article</a></div></div></div>");
+
+      $("#articles").append("<div class='card' style'width: 18rem;'> <img src='" + data[i].img + "' class='card-img-top' alt='img'><div class='card-body'><h5 data-id='" + data[i]._id + "' class='card-text'>" + data[i].title + "</h5><br><p class='mb-0'><strong>" + data[i].author + "</strong></p><p class='mb-0'>" + data[i].date + "</p></br><div = class''><a href='" + data[i].link + "' target='_blank' class='btn btn-primary btn-block'>Checkout The Article</a><a class='btn btn-primary btn-block' data-id='" + data[i]._id + "' id='saveArt'>Save Article</a></div></div></div>");
+
+    // Trying to impliment cleaner code of the above append. Not understanding why this is not working properly
+    //   $("#articles").append("<div class='card' id='subArticles' style'width: 18rem;'>");
+    //   $("#subArticles").append("<img src='" + data[i].img + "' class='card-img-top' alt='img'>");
+    //   $("#subArticles").append("<div class='card-body'id='subArticlesBody'>");
+    //   $("#subArticlesBody").append("<h5 data-id='" + data[i]._id + "' class='card-text'>" + data[i].title + "</h5><br>");
+    //   $("#subArticlesBody").append("<p class='mb-0'><strong>" + data[i].author + "</strong></p>");
+    //   $("#subArticlesBody").append("<p class='mb-0'>" + data[i].date + "</p></br>");
+    //   $("#subArticlesBody").append("<div id='subArtBtn'>");
+    //   $("#subArtBtn").append("<a href='" + data[i].link + "' target='_blank' class='btn btn-primary btn-block'>checkout the article</a>");
+    //   $("#subArticlesBody").append("</div>");
+    //   $("#subArticles").append("</div>");
+    //   $("#articles").append("</div>");
     }
   });
-  
-//   <div class='card' style'"width: 18rem;'> 
-//  // <img src="..." class="card-img-top" alt="...">
-//   //<div class="card-body">
-//   //<h5 class="card-title">Card title</h5>
-//   //<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-//   //<a href="#" class="btn btn-primary">Go somewhere</a>
-//   </div>
-// </div>
   
   // Whenever someone clicks a p tag
   $(document).on("click", "h5", function() {
@@ -84,5 +88,21 @@ $.getJSON("/articles", function(data) {
     // Also, remove the values entered in the input and textarea for note entry
     $("#titleinput").val("");
     $("#bodyinput").val("");
+  });
+
+  // When you click the Save Article button
+$(document).on("click", "#saveArt", function() {
+    var thisId = $(this).attr("data-id");
+    console.log(thisId);
+  
+    $.ajax({
+      method: "PUT",
+      url: "/saved/" + thisId,
+     
+    })
+    
+    .done(function(data) {
+        console.log(data);
+    });
   });
   

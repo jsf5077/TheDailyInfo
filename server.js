@@ -161,6 +161,45 @@ app.post("/articles/:id", function(req, res) {
     });
 });
 
+// Route for saving/updating article to be saved
+app.put("/saved/:id", function(req, res) {
+
+  db.Article
+    .findByIdAndUpdate({ _id: req.params.id }, { $set: { isSaved: true }})
+    .then(function(dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
+// Route for getting saved article
+app.get("/saved", function(req, res) {
+
+  db.Article
+    .find({ isSaved: true })
+    .then(function(dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
+// Route for deleting/updating saved article
+app.put("/delete/:id", function(req, res) {
+
+  db.Article
+    .findByIdAndUpdate({ _id: req.params.id }, { $set: { isSaved: false }})
+    .then(function(dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
 // Start the server
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
