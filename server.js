@@ -34,16 +34,15 @@ app.use(express.static("public"));
 
 // Connect to the Mongo DB
 mongoose.connect("mongodb://localhost/theDailyLeopard", { useNewUrlParser: true });
-// mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
 
 // Routes
 app.get("/", (req, res) => {
-  // res.send("This is the main page"); 
+
   db.Article.find({})
       .then(function(Article) {
-          // res.json(dbArticle); 
+
           console.log(Article); 
-          // console.log(res); 
+  
           res.render("body", {
               Article: Article
           }); 
@@ -54,38 +53,42 @@ app.get("/", (req, res) => {
 
   }) 
 
-// A GET route for scraping the echoJS website
+// A GET route for scraping the website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
   axios.get("https://worldanimalnews.com").then(function(response) {
-    // axios.get("http://www.echojs.com/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
-
-    // Now, we grab every h2 within an article tag, and do the following:
+    var result = {};
+ 
     $(".td_module_3").each(function(i, element) {
-      // Save an empty result object
-      var result = {};
-
-      // Add the text and href of every link, and save them as properties of the result object
-      // result.title = $(this)
-      //   .children("a")
-      //   .text();
+      
       result.title = $(element)
         .find(".entry-title")
         .children()
         .attr("title");
 
-        result.link = $(element)
+      result.link = $(element)
         .find(".entry-title")
         .children()
         .attr("href");
+      
+        result.img = $(element)
+        .find("a")
+        .children("img")
+        .attr("src");
 
-        // $(".entry-wrap").each((i, element) => {
+        result.author = $(element)
+        .find(".td-post-author-name")
+        .children("a")
+        .text()
+        .trim();
 
-        //   var title = $(element).find(".entry-title").text().trim();
-        //   var link = $(element).find(".entry-title").children().attr("href");
-        //   var summary = $(element).find(".entry-content").text().trim();
+        result.date = $(element)
+        .find(".td-post-date")
+        .children("time")
+        .text()
+        .trim();
 
       // Create a new Article using the `result` object built from scraping
       db.Article.create(result)
@@ -104,40 +107,8 @@ app.get("/scrape", function(req, res) {
   });
 });
 
-// Scrapes the site for articles 
-// app.get("/scrape", (req, res) => {
-//     axios.get("https://worldanimalnews.com").then((response) => {
-//         var $ = cheerio.load(response.data)
-
-//         $(".td_module_3").each((i, element) => {
-
-//             // var title = $(element).find(".entry-title").text().trim();
-//             var link = $(element).find(".entry-title").children().attr("href");
-//             // var summary = $(element).find(".entry-content").text().trim();
-
-//             db.Article.create({
-//                 // title:title, 
-//                 link:link,  
-//                 // summary:summary
-//             }, 
-//             (err, insert) => {
-//                 if (err) {
-//                     console.log(err); 
-//                 }
-//                 else {
-//                     console.log(insert); 
-//                 }
-//             })
-                
-//         })
-//     })
-
-//     res.send("Got the articles!"); 
-// })
-
 // Route for getting all Articles from the db
 app.get("/articles", function(req, res) {
-  // TODO: Finish the route so it grabs all of the articles
   db.Article.find({})
     .then(function(dbArticle) {
       res.json(dbArticle);

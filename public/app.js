@@ -3,21 +3,22 @@ $.getJSON("/articles", function(data) {
     // For each one
     for (var i = 0; i < data.length; i++) {
       // Display the apropos information on the page
-      $("#articles").append("<p data-id='" + data[i]._id + "'><a href='"+data[i].link+"' target='_blank'>"+ data[i].title + "</a></p>");
+    //   $("#articles").append("<p data-id='" + data[i]._id + "'><a href='"+data[i].link+"' target='_blank'>"+ data[i].title + "</a></p>");
+      $("#articles").append("<div class='card' style'width: 18rem;'> <img src='" + data[i].img + "' class='card-img-top' alt='img'><div class='card-body'><h5 data-id='" + data[i]._id + "' class='card-text'>" + data[i].title + "</h5><br><p class='mb-0'><strong>" + data[i].author + "</strong></p><p class='mb-0'>" + data[i].date + "</p></br><div = class''><a href='" + data[i].link + "' target='_blank' class='btn btn-primary btn-block'>checkout the article</a></div></div></div>");
     }
   });
   
-//   <div class="card" style="width: 18rem;">
-//   <img src="..." class="card-img-top" alt="...">
-//   <div class="card-body">
-//     <h5 class="card-title">Card title</h5>
-//     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-//     <a href="#" class="btn btn-primary">Go somewhere</a>
+//   <div class='card' style'"width: 18rem;'> 
+//  // <img src="..." class="card-img-top" alt="...">
+//   //<div class="card-body">
+//   //<h5 class="card-title">Card title</h5>
+//   //<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+//   //<a href="#" class="btn btn-primary">Go somewhere</a>
 //   </div>
 // </div>
   
   // Whenever someone clicks a p tag
-  $(document).on("click", "p", function() {
+  $(document).on("click", "h5", function() {
     // Empty the notes from the note section
     $("#notes").empty();
     // Save the id from the p tag
@@ -31,14 +32,20 @@ $.getJSON("/articles", function(data) {
       // With that done, add the note information to the page
       .then(function(data) {
         console.log(data);
+        $("#notes").append("<div class='card container'id='subNotes'>");
+        $("#subNotes").append("<div class='form-group'>");
         // The title of the article
-        $("#notes").append("<h2>" + data.title + "</h2>");
+        $("#subNotes").append("<h2>" + data.title + "</h2>");
+        $("#subNotes").append("<label for='sel1'>Title:</label>");
         // An input to enter a new title
-        $("#notes").append("<input id='titleinput' name='title' >");
+        $("#subNotes").append("<input id='titleinput' name='title' class='form-control'>");
+        $("#subNotes").append("<label for='sel1'>body:</label>");
         // A textarea to add a new note body
-        $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
+        $("#subNotes").append("<textarea id='bodyinput' name='body' class='form-control'></textarea>");
         // A button to submit a new note, with the id of the article saved to it
-        $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+        $("#subNotes").append("<button class='btn btn-primary mt-2 mb-2' data-id='" + data._id + "' id='savenote'>Save Note</button>");
+        $("#subNotes").append("</div>");
+        $("#notes").append("</div>");
   
         // If there's a note in the article
         if (data.note) {
