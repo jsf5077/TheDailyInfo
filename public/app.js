@@ -4,9 +4,12 @@ $.getJSON("/articles", function(data) {
     for (var i = 0; i < data.length; i++) {
       // Display the apropos information on the page
 
+      //By default my website does not include a summary in the article thumbnail as the titles serve as a summary. So I have included the image, author, and date of the article.
+
       $("#articles").append("<div class='card' style'width: 18rem;'> <img src='" + data[i].img + "' class='card-img-top' alt='img'><div class='card-body'><h5 data-id='" + data[i]._id + "' class='card-text'>" + data[i].title + "</h5><br><p class='mb-0'><strong>" + data[i].author + "</strong></p><p class='mb-0'>" + data[i].date + "</p></br><div = class''><a href='" + data[i].link + "' target='_blank' class='btn btn-primary btn-block'>Checkout The Article</a><a class='btn btn-primary btn-block' data-id='" + data[i]._id + "' id='saveArt'>Save Article</a></div></div></div>");
 
     // Trying to impliment cleaner code of the above append. Not understanding why this is not working properly
+    
     //   $("#articles").append("<div class='card' id='subArticles' style'width: 18rem;'>");
     //   $("#subArticles").append("<img src='" + data[i].img + "' class='card-img-top' alt='img'>");
     //   $("#subArticles").append("<div class='card-body'id='subArticlesBody'>");
@@ -27,6 +30,28 @@ $.getJSON("/articles", function(data) {
     $("#notes").empty();
     // Save the id from the p tag
     var thisId = $(this).attr("data-id");
+
+    $(".scrape-new").on("click", function(event) {
+        event.preventDefault();  
+        
+        $.ajax("/scrape", {
+            type: "GET"
+        })
+        .then(function() {
+            console.log("finished scrape"); 
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 5000)  
+        }) 
+    }) 
+
+    $("#savedArticles").on("click", function(event) {
+        event.preventDefault(); 
+        console.log("i clicked to view saved posts"); 
+        window.location.href = "/saved";  
+    })
+
+   
   
     // Now make an ajax call for the Article
     $.ajax({

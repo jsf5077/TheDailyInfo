@@ -70,6 +70,9 @@ app.get("/", (req, res) => {
 
   }) 
 
+
+  
+
 // A GET route for scraping the website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
@@ -117,6 +120,7 @@ app.get("/scrape", function(req, res) {
           // If an error occurred, log it
           console.log(err);
         });
+        // res.send("testing 123");
     });
 
     // Send a message to the client
@@ -203,6 +207,22 @@ app.get("/saved", function(req, res) {
       res.json(err);
     });
 });
+
+// app.get("/saved", (req, res) => {
+
+  //   db.Article.find({isSaved:true})
+  //       .then(function(Article) {
+  
+  //           console.log(Article); 
+    
+  //           res.render("body", {
+  //               Article: Article
+  //           }); 
+  //       })
+  //       .catch ((err) => {
+  //           res.json(err); 
+  //       })
+  //   }) 
 
 // Route for deleting/updating saved article
 app.put("/delete/:id", function(req, res) {
