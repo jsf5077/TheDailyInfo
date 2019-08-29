@@ -38,7 +38,7 @@ app.use(express.static("public"));
 
 var MONGODB_URI = process.env.MONGODB_URI;
 
-mongoose.connect(MONGODB_URI || "mongodb://theDailyLeopard:password69@ds353007.mlab.com:53007/heroku_gkrk0qlw",
+mongoose.connect(MONGODB_URI || "mongodb://jsf5077:password69@ds251877.mlab.com:51877/heroku_73d96m7v",
   {
   useMongoClient: true
   }
