@@ -36,9 +36,20 @@ app.use(express.static("public"));
 // mongoose.connect("mongodb://localhost/theDailyLeopard", { useNewUrlParser: true });
 
 
-var MONGODB_URI = process.env.MONGODB_URI;
+// var MONGODB_URI = process.env.MONGODB_URI;
 
-mongoose.connect(MONGODB_URI || "mongodb://jsf5077:password69@ds251877.mlab.com:51877/heroku_73d96m7v");
+// mongoose.connect(MONGODB_URI || "mongodb://jsf5077:password69@ds251877.mlab.com:51877/heroku_73d96m7v");
+
+var DB_Connect = process.env.MONGODB_URI || "mongodb://localhost/theDailyLeopard"; 
+
+mongoose.connect(DB_Connect, { useNewUrlParser: true }, function (err) {
+    if (err) {
+        console.log(err); 
+    }
+    else {
+        console.log("connected to the db"); 
+    }
+});
 
 
 // Routes
