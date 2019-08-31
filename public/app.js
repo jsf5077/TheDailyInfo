@@ -1,33 +1,3 @@
-// Grab the articles as a json
-// $.getJSON("/articles", function(data) {
-
-//   // For each one
-//   for (var i = 0; i < data.length; i++) {
-//     // Display the apropos information on the page
-
-//     //By default my website does not include a summary in the article thumbnail as the titles serve as a summary. So I have included the image, author, and date of the article.
-
-//     $("#articles").append(
-//       "<div class='card' style'width: 18rem;'> <img src='" +
-//         data[i].img +
-//         "' class='card-img-top' alt='img'><div class='card-body'><h5 data-id='" +
-//         data[i]._id +
-//         "' class='card-text'>" +
-//         data[i].title +
-//         "</h5><br><p class='mb-0'><strong>" +
-//         data[i].author +
-//         "</strong></p><p class='mb-0'>" +
-//         data[i].date +
-//         "</p></br><div = class''><a href='" +
-//         data[i].link +
-//         "' target='_blank' class='btn btn-primary btn-block'>Checkout The Article</a><a class='btn btn-primary btn-block' data-id='" +
-//         data[i]._id +
-//         "' id='saveArt'>Save Article</a></div></div></div>"
-//     );
-//   }
-// });
-
-
 $("#savedArticles").on("click", function(event) {
   $("#articles").empty();
   event.preventDefault();
@@ -138,5 +108,20 @@ $(document).on("click", "#saveArt", function() {
   })
   .done(function(data) {
     console.log(data);
+  });
+});
+
+// When you click the Save Article button
+$(document).on("click", "#deleteArt", function() {
+  var thisId = $(this).attr("data-id");
+  console.log(thisId);
+
+  $.ajax({
+    type: "PUT",
+    url: "/delete/" + thisId
+  })
+  .done(function(data) {
+    console.log(data);
+    window.location.href = "/saved";
   });
 });
