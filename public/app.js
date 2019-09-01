@@ -1,8 +1,21 @@
 $("#savedArticles").on("click", function(event) {
-  $("#articles").empty();
   event.preventDefault();
-  console.log("i clicked to view saved posts");
   window.location.href = "/saved";
+});
+
+
+$("#scrapeNew").on("click", function() {
+  console.log("button Clicked")
+  event.preventDefault();
+  console.log("i clicked to clear the posts");
+  $.ajax("/scrape", {
+    type: "GET"
+  }).then(function() {
+    console.log("finished scrape");
+    setTimeout(() => {
+    }, 1000);
+    window.location.href = "/";
+  });
 });
 
 // Whenever someone clicks a p tag
@@ -11,21 +24,6 @@ $(document).on("click", "h5", function() {
   $("#notes").empty();
   // Save the id from the p tag
   var thisId = $(this).attr("data-id");
-  
-
-  $(".scrape-new").on("click", function(event) {
-    event.preventDefault();
-
-    $.ajax("/scrape", {
-      type: "GET"
-    }).then(function() {
-      console.log("finished scrape");
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 5000);
-    });
-  });
-
 
   // Now make an ajax call for the Article
   $.ajax({
@@ -35,7 +33,9 @@ $(document).on("click", "h5", function() {
     // With that done, add the note information to the page
     .then(function(data) {
       console.log(data);
-      $("#notes").append("<div class='card container'id='subNotes'>");
+      $("#notes").append(
+        "<div class='card sticky-top container'id='subNotes'>"
+      );
       $("#subNotes").append("<div class='form-group'>");
       // The title of the article
       $("#subNotes").append("<h2>" + data.title + "</h2>");
@@ -105,8 +105,7 @@ $(document).on("click", "#saveArt", function() {
   $.ajax({
     method: "PUT",
     url: "/saved/" + thisId
-  })
-  .done(function(data) {
+  }).done(function(data) {
     console.log(data);
   });
 });
@@ -119,8 +118,7 @@ $(document).on("click", "#deleteArt", function() {
   $.ajax({
     type: "PUT",
     url: "/delete/" + thisId
-  })
-  .done(function(data) {
+  }).done(function(data) {
     console.log(data);
     window.location.href = "/saved";
   });

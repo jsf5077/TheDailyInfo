@@ -75,6 +75,7 @@ app.get("/saved", (req, res) => {
 
 
 // A GET route for scraping the website
+
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
   axios.get("https://worldanimalnews.com").then(function(response) {
@@ -83,35 +84,47 @@ app.get("/scrape", function(req, res) {
     var result = {};
 
     $(".td_module_3").each(function(i, element) {
-      result.title = $(element)
+
+      var title = $(element)
+      // result.title = $(element)
         .find(".entry-title")
         .children()
         .attr("title");
 
-      result.link = $(element)
+        var link = $(element)
+      // result.link = $(element)
         .find(".entry-title")
         .children()
         .attr("href");
 
-      result.img = $(element)
+        var img = $(element)
+      // result.img = $(element)
         .find("a")
         .children("img")
         .attr("src");
 
-      result.author = $(element)
+      var author = $(element)
+      // result.author = $(element)
         .find(".td-post-author-name")
         .children("a")
         .text()
         .trim();
 
-      result.date = $(element)
+      var date = $(element)
+      // result.date = $(element)
         .find(".td-post-date")
         .children("time")
         .text()
         .trim();
 
       // Create a new Article using the `result` object built from scraping
-      db.Article.create(result)
+      db.Article.create({
+        title:title,
+        link:link,
+        img:img,
+        author:author,
+        date:date 
+      })
         .then(function(dbArticle) {
           // View the added result in the console
           console.log(dbArticle);
@@ -120,9 +133,7 @@ app.get("/scrape", function(req, res) {
           // If an error occurred, log it
           console.log(err);
         });
-      // res.send("testing 123");
     });
-
     // Send a message to the client
     res.send("Scrape Complete");
   });
@@ -160,16 +171,9 @@ app.get("/articles/:id", function(req, res) {
 
 // Route for saving/updating an Article's associated Note
 app.post("/articles/:id", function(req, res) {
-  // TODO
-  // ====
-  // save the new note that gets posted to the Notes collection
-  // then find an article from the req.params.id
-  // and update it's "note" property with the _id of the new note
+  
   db.Note.create(req.body)
     .then(function(dbNote) {
-      // If a Note was created successfully, find one User (there's only one) and push the new Note's _id to the User's `notes` array
-      // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-      // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
       return db.Article.findOneAndUpdate(
         { _id: req.params.id },
         { note: dbNote._id },
