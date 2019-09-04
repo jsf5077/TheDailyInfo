@@ -1,0 +1,28 @@
+
+.jumbotron {
+  background-image: url("../images/titleBackground.jpg");
+}
+h1 {
+  font-family: 'Permanent Marker', cursive;
+  font-size: 6.3rem;
+  color: #ffe59e;
+  text-shadow: 6px 6px #2f2822;
+}
+.navbar {
+  color: #f19827;
+}
+
+#articles {
+  background-color: #a49987;
+  border-radius: 25px;
+}
+.card-body {
+  background-color: #2f2822;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #f19827;
+  color: #2f2822;
+  border-color:  #f19827;
+}
